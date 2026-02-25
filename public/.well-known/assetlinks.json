@@ -1,0 +1,14 @@
+[
+  {
+    "relation": [
+      "delegate_permission/common.handle_all_urls"
+    ],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.edxly.whiteBoard",
+      "sha256_cert_fingerprints": [
+        "70:8E:F6:DA:12:22:6A:22:2E:17:CC:4A:48:C7:25:B1:92:0A:01:7C:50:5B:E7:0B:95:E0:57:99:40:A4:74:D8"
+      ]
+    }
+  }
+]
