@@ -137,11 +137,31 @@ console.log("🔥 Connecting to board:", resolvedBoardId, "| raw boardId:", boar
   const lastUpdateRef = useRef<number>(0);
   const THROTTLE_MS = 40;
 
-  // ─── INIT ───────────────────────────────────────────────────────────────────
-  useEffect(() => {
-    // Wait until we have a userName and a board ID before connecting
-    if (initializedRef.current || !userName || !resolvedBoardId) return;
-    initializedRef.current = true;
+  const prevBoardIdRef = useRef<string>("");
+
+useEffect(() => {
+  if (prevBoardIdRef.current && prevBoardIdRef.current !== resolvedBoardId) {
+    initializedRef.current = false;
+    if (providerRef.current) {
+      providerRef.current.destroy();
+      providerRef.current = null;
+    }
+    if (ydocRef.current) {
+      ydocRef.current.destroy();
+      ydocRef.current = null;
+    }
+  }
+  prevBoardIdRef.current = resolvedBoardId;
+}, [resolvedBoardId]);
+
+// ─── INIT ───────────────────────────────────────────────────────────────────
+useEffect(() => {
+  if (!resolvedBoardId) return;        // ← NEW
+  if (!userName) return;               // ← NEW (waits but doesn't lock)
+  if (initializedRef.current) return;  // ← NEW
+
+  initializedRef.current = true;
+  // ... rest of your existing code stays exactly the same
 
     // Stable client identity (survives page refreshes)
     const clientId =
