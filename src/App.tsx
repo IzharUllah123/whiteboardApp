@@ -7,30 +7,22 @@ import "./index.css";
 function App() {
   useEffect(() => {
     CapacitorApp.addListener('appUrlOpen', (event) => {
-      console.log('Raw URL received:', event.url); // ADD THIS TO DEBUG
+      console.log("📱 Raw URL:", event.url);
       
       try {
-        const url = new URL(event.url);
-        let path = url.pathname + url.search;
-        
-        // Handle custom scheme: myapp://yourdomain.com/board/123
-        // In this case pathname starts with the domain
-        if (path.startsWith('/yourdomain.com') || !path.startsWith('/board/')) {
-          // Extract just the path portion after the domain
-          const match = event.url.match(/\/board\/[^?#]+/);
-          if (match) {
-            path = match[0] + url.search;
-          }
-        }
-
-        console.log('Navigating to path:', path); // ADD THIS TO DEBUG
-
-        if (path && path.includes('/board/')) {
-          // Use replace:true to force component remount
-          router.navigate(path, { replace: true });
+        // Extract board ID from URL
+        const match = event.url.match(/\/board\/([a-zA-Z0-9\-]+)/);
+        if (match) {
+          const boardId = match[1];
+          console.log("📱 Board ID from deep link:", boardId);
+          
+          // Store it BEFORE navigating so BoardPage reads it correctly
+          sessionStorage.setItem("edxly-deeplink-board", boardId);
+          
+          router.navigate(`/board/${boardId}`, { replace: true });
         }
       } catch (e) {
-        console.error('Failed to parse deep link URL:', e);
+        console.error("Deep link error:", e);
       }
     });
 

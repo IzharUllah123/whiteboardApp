@@ -96,12 +96,20 @@ const JoineeModal = ({
 // --- Main BoardPage Component ---
 function BoardPage() {
   const { boardId: urlBoardId } = useParams();
-  const [internalBoardId, setInternalBoardId] = useState<string>(() => {
-  // Get urlBoardId synchronously from window.location
+const [internalBoardId, setInternalBoardId] = useState<string>(() => {
+  // 1. Check deep link board ID (set by App.tsx before navigation)
+  const deepLinkId = sessionStorage.getItem("edxly-deeplink-board");
+  if (deepLinkId) {
+    sessionStorage.removeItem("edxly-deeplink-board"); // Clear after use
+    return deepLinkId;
+  }
+
+  // 2. Check URL params (works for browser)
   const match = window.location.pathname.match(/\/board\/([a-zA-Z0-9\-]+)/);
   const urlId = match ? match[1] : null;
-  if (urlId) return urlId; // Guest: use URL board ID immediately
-  // Host: reuse or create session board ID
+  if (urlId) return urlId;
+
+  // 3. Host: reuse or create session board ID
   const existing = sessionStorage.getItem("edxly-current-board");
   if (existing) return existing;
   const newId = crypto.randomUUID();
