@@ -6,7 +6,7 @@ const config: CapacitorConfig = {
   webDir: 'dist',
   server: {
     // This tells the app its home is your Vercel site, not localhost
-    hostname: 'white-board2026.vercel.app',
+    hostname: 'whiteboard-app-rust-iota.vercel.app',
     androidScheme: 'https'
   }
 };

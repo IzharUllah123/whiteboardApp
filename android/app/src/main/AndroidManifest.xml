@@ -26,7 +26,7 @@
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
-                <data android:scheme="https" android:host="white-board2026.vercel.app" />
+                <data android:scheme="https" android:host="whiteboard-app-rust-iota.vercel.app" />
             </intent-filter>
 
         </activity>
